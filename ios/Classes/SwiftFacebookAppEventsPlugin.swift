@@ -185,7 +185,11 @@ public class SwiftFacebookAppEventsPlugin: NSObject, FlutterPlugin {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
         let enabled = arguments["enabled"] as! Bool
         let collectId = arguments["collectId"] as! Bool
-        FBAdSettings.setAdvertiserTrackingEnabled(enabled)
+        if #available(iOS 12.0, *) {
+            FBAdSettings.setAdvertiserTrackingEnabled(enabled)
+        } else {
+            // Fallback on earlier versions
+        }
         Settings.shared.isAdvertiserTrackingEnabled = enabled
         Settings.shared.isAdvertiserIDCollectionEnabled = collectId
         result(nil)
